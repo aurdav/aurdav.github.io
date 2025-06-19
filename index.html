@@ -22,10 +22,9 @@
   </style>
 </head>
 <body>
-  <h1>Bienvenue sur mon site</h1>
-
+ 
     <h1>Test de communication WebView iOS</h1>
-    <button onclick="envoyerMessage()">Envoyer Message</button>
+    <button onclick="envoyerMessage()">Envoyer le Message</button><br><br>
 
   <button id="monBouton">Cliquez</button>
   <p id="message"></p>
@@ -37,14 +36,6 @@
       document.getElementById('message').textContent = 'Vous avez cliqué sur le bouton !';
     });
 
-    function envoyerMessage() {
-        // Vérifie si le gestionnaire est disponible
-        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.myHandler) {
-            window.webkit.messageHandlers.myHandler.postMessage("Message depuis la page web");
-        } else {
-            console.log("Gestionnaire iOS non disponible");
-        }
-    }
   </script>
 </body>
 </html>
