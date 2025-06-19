@@ -27,15 +27,25 @@
     <button onclick="envoyerMessage()">Envoyer le Message</button><br><br>
 
   <button id="monBouton">Cliquez</button>
-  <p id="message"></p>
-
+  <p id="message"></p><br><br>
+ <button onclick="alert('webkit: ' + (window.webkit ? 'présent' : 'absent'));">Vérifier window.webkit</button>
   <script>
     // Ajoute un événement au clic sur le bouton
     document.getElementById('monBouton').addEventListener('click', function() {
       // Modifie le contenu du paragraphe
       document.getElementById('message').textContent = 'Vous avez cliqué sur le bouton !';
     });
-
+   function envoyerMessage() {
+      if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.myHandler) {
+          window.webkit.messageHandlers.myHandler.postMessage("Message depuis la page web");
+      } else {
+          console.log("Gestionnaire iOS non disponible");
+      }
+    };
+      function testAlert() {
+        console.log('Test alert');
+        alert('Test d\'alerte');
+      };
   </script>
 </body>
 </html>
