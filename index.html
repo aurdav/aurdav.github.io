@@ -23,10 +23,10 @@
 </head>
 <body>
  
-    <h1>Test de communication WebView iOS</h1>
-    <button onclick="envoyerMessage()">Envoyer le Message</button><br><br>
+    <h1>Site web</h1>
+    <button onclick="envoyerMessage()">Envoyer une demande d'authent</button><br><br>
 
-  <button id="monBouton">Cliquez</button>
+  <button id="monBouton">Cliquer pour vérifier javascript</button>
   <p id="message"></p><br><br>
  <button onclick="alert('webkit: ' + (window.webkit ? 'présent' : 'absent'));">Vérifier window.webkit</button>
   <script>
@@ -37,7 +37,7 @@
     });
    function envoyerMessage() {
       if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.myHandler) {
-          window.webkit.messageHandlers.myHandler.postMessage("Message depuis la page web");
+          window.webkit.messageHandlers.myHandler.postMessage("Message reçu du site web");
       } else {
           console.log("Gestionnaire iOS non disponible");
       }
