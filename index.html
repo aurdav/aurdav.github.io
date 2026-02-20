@@ -25,12 +25,17 @@
  
     <h1>Site web</h1><br><br>
 
-    <button onclick="lancerAuth()">Se connecter avec Orange</button><br><br>
+    <button onclick="launchAuth()">Se connecter avec Orange depuis l'app web</button><br><br><br><br>
+
+    <button onclick="window.webkit.messageHandlers.authHandler.postMessage('launchAuth')">Se connecter avec Orange depuis la webView</button><br><br><br><br>
+
 
     <button onclick="envoyerMessage()">Déclencher une action sur l'App</button><br><br>
 
   <button id="monBouton">Cliquer pour vérifier javascript</button>
   <p id="message"></p><br><br><br><br>
+
+  
   <button onclick="alert('webkit: ' + (window.webkit ? 'présent' : 'absent'));">Vérifier window.webkit</button>
   <script>
     // Ajoute un événement au clic sur le bouton
@@ -50,19 +55,19 @@
         alert('Test d\'alerte');
       };
 
-      function lancerAuth() {
-      const clientId = 'test_nde_public'; 
-      const redirectUri = encodeURIComponent('https://login.staging.orange.fr/sdk/api/nde/callback'); 
-      const responseType = 'code'; 
-      const scope = 'openid'; // Scope supporté par la plateforme
-      const state = 'nkjBJKZNJCb72TE7dhjcbkjshlIYDh'; // Générer une valeur aléatoire pour la sécurité
+      function launchAuth() {
+        const clientId = 'test_nde_public'; 
+        const redirectUri = encodeURIComponent('https://login.staging.orange.fr/sdk/api/nde/callback'); 
+        const responseType = 'code'; 
+        const scope = 'openid'; // Scope supporté par la plateforme
+        const state = 'nkjBJKZNJCb72TE7dhjcbkjshlIYDh'; // Générer une valeur aléatoire pour la sécurité
 
-      const url = `https://openid-int.orange.fr/oidc//authorize?response_type=${responseType}&client_id=${clientId}&scope=${scope}&redirect_uri=${redirectUri}&state=${state}`;
+        const url = `https://openid-int.orange.fr/oidc//authorize?response_type=${responseType}&client_id=${clientId}&scope=${scope}&redirect_uri=${redirectUri}&state=${state}`;
 
-      // Ouvrir dans un nouvel onglet ou WebView
-      //window.open(url, '_blank');
-      window.location.href = url;
-    }
+        // Ouvrir dans un nouvel onglet ou WebView
+        //window.open(url, '_blank');
+        window.location.href = url;
+      }
 
   </script>
 </body>
