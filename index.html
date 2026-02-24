@@ -27,8 +27,9 @@
 
     <button onclick="launchAuth()">Se connecter avec Orange depuis l'app web</button><br><br><br><br>
 
-    <button onclick="window.webkit.messageHandlers.authHandler.postMessage('launchAuth')">Se connecter avec Orange depuis la webView</button><br><br><br><br>
-
+    <button onclick="launchNativeAuth()">Se connecter avec Orange sur app mobile</button>
+  
+    <!-- <button onclick="window.webkit.messageHandlers.authHandler.postMessage('launchAuth')">Se connecter avec Orange depuis la webView</button><br><br><br><br> -->
 
     <button onclick="envoyerMessage()">Déclencher une action sur l'App</button><br><br>
 
@@ -38,6 +39,17 @@
   
   <button onclick="alert('webkit: ' + (window.webkit ? 'présent' : 'absent'));">Vérifier window.webkit</button>
   <script>
+
+// pour authent dans app native via pont 
+    function launchNativeAuth() {
+        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.authHandler) {
+            window.webkit.messageHandlers.authHandler.postMessage('launchAuth');
+        } else {
+            console.warn("Le pont natif n'est pas disponible");
+        }
+    }
+//////////////////////////////////////////
+
     // Ajoute un événement au clic sur le bouton
     document.getElementById('monBouton').addEventListener('click', function() {
       // Modifie le contenu du paragraphe
@@ -55,13 +67,26 @@
         alert('Test d\'alerte');
       };
 
-      function launchAuth() {
-        const clientId = 'test_nde_public'; 
-        const redirectUri = encodeURIComponent('https://login.staging.orange.fr/sdk/api/nde/callback'); 
-        const responseType = 'code'; 
-        const scope = 'openid'; // Scope supporté par la plateforme
-        const state = 'nkjBJKZNJCb72TE7dhjcbkjshlIYDh'; // Générer une valeur aléatoire pour la sécurité
+      // Exemple minimal pour générer code_verifier et code_challenge en JS
+      function base64URLEncode(str) {
+        return str.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      }
 
+      async function sha256(plain) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(plain);
+        const hash = await crypto.subtle.digest('SHA-256', data);
+        return btoa(String.fromCharCode(...new Uint8Array(hash)));
+      }
+
+      async function launchAuth() {
+        const clientId = 'test_nde_public';
+        const redirectUri = encodeURIComponent('https://login.staging.orange.fr/sdk/api/nde/callback');
+        const responseType = 'code';
+        const scope = 'openid';
+        const state = 'kjnhbjknbJLH76TDYUhiguLQ71657Chbh'; // générer aléatoirement
+        const codeVerifier = 'jBJHBKJnxh&986875T1jhbhjBx'; // générer aléatoirement
+        const codeChallenge = base64URLEncode(await sha256(codeVerifier));
         const url = `https://openid-int.orange.fr/oidc//authorize?response_type=${responseType}&client_id=${clientId}&scope=${scope}&redirect_uri=${redirectUri}&state=${state}`;
 
         // Ouvrir dans un nouvel onglet ou WebView
